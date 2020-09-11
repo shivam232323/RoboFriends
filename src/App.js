@@ -1,26 +1,56 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React ,{Component} from 'react';
+import Robotss from './Robotss';
+import Search from './Search';
+import './App.css'
 
-function App() {
+
+class App extends Component  {
+
+    constructor()
+    {
+    	super()
+
+    	this.state=
+    	{
+    		robot:[],
+            searchfield:' '
+    	}
+    	 
+    }
+
+    search = (event) => {
+   
+          this.setState({searchfield: event.target.value});
+        
+    }
+
+      componentDidMount()
+      {
+      	fetch('https://jsonplaceholder.typicode.com/users').then(response=> response.json()).then(users =>
+      	 this.setState({robot:users}));
+      	
+      	
+      }
+
+
+      render()
+      {
+      	const filterrobots=this.state.robot.filter(robot =>{
+      	 return  robot.name.toLowerCase().includes(this.state.searchfield.toLowerCase());
+     
+                  
+        })
+             
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  	<div className="tc">
+
+         <Search onsearch={this.search}/>
+         <Robotss robots={filterrobots}/>
+   </div>
+      );
+}
+
 }
 
 export default App;
+
